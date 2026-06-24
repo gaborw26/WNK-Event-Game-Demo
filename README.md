@@ -1,15 +1,10 @@
-# Winkworth Event Game — Demo
+# Winkworth — Headliner House (Demo)
 
-A static, **shareable demo** of two in-house Winkworth event quiz activations:
+A static, **shareable demo** of the in-house Winkworth event quiz for **BST Hyde Park**:
+see a star's home, name that night's headliner, get **3 in a row** to "win".
 
-- **Headliner House** (BST Hyde Park) — see a star's home, name the headliner.
-- **What's it Winkworth?** (RHS Chelsea) — real Winkworth listings, guess the price.
+> ⚠️ **Visual demo only.** It runs without a backend, so registrations are **not stored**
+> and prize codes are generated locally for show. The real version emails each winner
+> their code (and a copy to marketing) and is served over HTTPS — it stores nothing.
 
-Get **3 in a row** to "win" and see the prize-code screen.
-
-> ⚠️ **This is a visual demo only.** It runs without a backend, so registrations
-> are **not stored**, prize codes are generated locally for show, and there is no
-> admin dashboard. The full version (with real lead capture, server-issued codes,
-> redemption and a GDPR-compliant admin) lives in the private app repository.
-
-Hosted on GitHub Pages. Built with vanilla HTML/CSS/JS — no framework.
+Hosted on GitHub Pages. Vanilla HTML/CSS/JS — no framework.

@@ -2,62 +2,104 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Winkworth · Event Game Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Winkworth · Headliner House</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{--navy:#0D1B4D;--navy-2:#16285E;--ink:#070E26;--gold:#C9A84C;--gold-2:#F0CE6E;--display:'Anton',sans-serif;--sans:'DM Sans',sans-serif}
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-  body{font-family:var(--sans);color:#fff;min-height:100dvh;background:var(--ink);
-    background-image:
-      radial-gradient(120% 60% at 50% -8%, rgba(201,168,76,0.16), transparent 55%),
-      linear-gradient(180deg,var(--navy-2) 0%,var(--navy) 45%,var(--ink) 100%);
-    display:flex;align-items:center;justify-content:center;padding:32px 22px}
-  .wrap{width:100%;max-width:440px;text-align:center}
-  .logo{height:30px;margin-bottom:18px;opacity:.96}
-  .strip{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:8px}
-  .strip span{height:1px;flex:1;max-width:54px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.6))}
-  .strip span:last-child{background:linear-gradient(90deg,rgba(201,168,76,0.6),transparent)}
-  .eyebrow{color:var(--gold-2);font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700}
-  h1{font-family:var(--display);text-transform:uppercase;font-size:44px;line-height:.95;letter-spacing:1px;margin:14px 0 10px;
-    background:linear-gradient(180deg,#fff,#FBE7BC 60%,var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .sub{color:rgba(255,255,255,0.7);font-size:15px;line-height:1.55;margin-bottom:26px}
-  .card{display:block;text-decoration:none;color:#fff;text-align:left;position:relative;overflow:hidden;
-    border:1px solid rgba(201,168,76,0.3);border-radius:16px;padding:20px;margin-bottom:14px;
-    background:linear-gradient(110deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));transition:transform .1s,border-color .15s}
-  .card:hover{border-color:rgba(240,206,110,0.75)}
-  .card:active{transform:scale(.985)}
-  .card .ev{font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:5px}
-  .card .nm{font-family:var(--display);font-size:27px;text-transform:uppercase;letter-spacing:.5px;line-height:1}
-  .card .ds{font-size:12.5px;color:rgba(255,255,255,0.6);margin-top:6px}
-  .card .go{position:absolute;right:18px;top:50%;transform:translateY(-50%);color:var(--gold-2);font-size:26px}
-  .note{font-size:11px;color:rgba(255,255,255,0.4);margin-top:18px;line-height:1.5}
-</style>
+<link rel="stylesheet" href="quiz.css">
+<!-- Festival theme is the default in quiz.css — no overrides needed for BST -->
 </head>
 <body>
-  <div class="wrap">
-    <img class="logo" src="logo-light.svg" alt="Winkworth">
-    <div class="strip"><span></span><div class="eyebrow">Event Game · Demo</div><span></span></div>
-    <h1>Pick a Game</h1>
-    <div class="sub">Two Winkworth event activations, built in-house. Tap one to play — get 3 in a row to win.</div>
+<div id="app">
+  <section id="s-intro" class="screen center active"></section>
+  <section id="s-days" class="screen center"></section>
+  <section id="s-game" class="screen"></section>
+  <section id="s-locked" class="screen center"></section>
+</div>
 
-    <a class="card" href="bst.html">
-      <div class="ev">BST Hyde Park · 2026</div>
-      <div class="nm">Headliner House</div>
-      <div class="ds">See a star's home — name that night's headliner.</div>
-      <div class="go">→</div>
-    </a>
-
-    <a class="card" href="chelsea.html">
-      <div class="ev">RHS Chelsea · The Terrace</div>
-      <div class="nm">What's it Winkworth?</div>
-      <div class="ds">Real Winkworth listings — guess the asking price.</div>
-      <div class="go">→</div>
-    </a>
-
-    <div class="note">Demo build — registrations are <strong>not saved</strong> and prize codes are illustrative.</div>
-  </div>
+<script>
+/* ============================================================
+   EVENT CONFIG — BST Hyde Park.  Edit this block to update the event.
+   The engine (quiz-engine.js) and styles (quiz.css) are shared.
+   ============================================================ */
+window.CONFIG = {
+  demo: true,
+  event: "bst-2026",
+  brand: "Winkworth",
+  logo: "logo-light.svg",
+  logoNavy: "logo-navy.svg",
+  eyebrow: "BST Hyde Park · 2026",
+  title: "Headliner House",
+  lede: "We show you a star's home. You name that night's headliner. <strong>3 in a row</strong> wins a prize at the Winkworth Hideaway.",
+  prompt: "Whose house is this?",
+  unit: "House",
+  collectAt: "Winkworth Hideaway",
+  streakToWin: 3,
+  attemptsPerDay: 3,
+  lineupTitle: "The Lineup",
+  consentText: "I agree to be contacted by Winkworth about properties and services. I can opt out at any time.",
+  steps: [
+    ["1", "We show a star's <strong>home</strong>."],
+    ["2", "You name the <strong>headliner</strong>."],
+    ["3", "In a row <strong>wins a prize</strong>."],
+  ],
+  // Dates verified against bst-hydepark.com: 3 Jul 2026 = Friday, 4th = Saturday, 5th = Sunday.
+  days: [
+    {
+      id: "fri", title: "Maroon 5", tag: "Fri 3 Jul",
+      questions: [
+        { clue: "A 1930s ranch-style estate in Pacific Palisades, Los Angeles — bought from Ben Affleck & Jennifer Garner, and once owned by Hollywood legend Gregory Peck.",
+          style: "Ranch Estate · LA", img: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=700&q=80",
+          options: ["Maroon 5", "Mumford & Sons", "Duran Duran"], answer: 0,
+          fact: "Adam Levine and Behati Prinsloo bought the Pacific Palisades home from the Afflecks in 2019." },
+        { clue: "A gated estate in the exclusive Riviera area of Los Angeles, home to a chart-topping pop-rock frontman.",
+          style: "Gated Estate · LA", img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=700&q=80",
+          options: ["Duran Duran", "Maroon 5", "Mumford & Sons"], answer: 1,
+          fact: "LA's Riviera neighbourhood is a long-time celebrity enclave." },
+        { clue: "A West London band with deep Putney roots — they were even named in a pub by Putney Bridge.",
+          style: "West London", img: "https://images.unsplash.com/photo-1570129477492-45c003329943?w=700&q=80",
+          options: ["Maroon 5", "Mumford & Sons", "Duran Duran"], answer: 1,
+          fact: "Mumford & Sons formed in West London in 2007." },
+      ],
+    },
+    {
+      id: "sat", title: "Mumford & Sons", tag: "Sat 4 Jul",
+      questions: [
+        { clue: "A 16th-century farmhouse deep in the Devon countryside — a world away from the festival stage.",
+          style: "Farmhouse · Devon", img: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=700&q=80",
+          options: ["Mumford & Sons", "Maroon 5", "Duran Duran"], answer: 0,
+          fact: "Devon is a popular rural retreat for British musicians." },
+        { clue: "A Grade I listed manor in Wiltshire, all honey-coloured stone and walled gardens.",
+          style: "Manor · Wiltshire", img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80",
+          options: ["Duran Duran", "Mumford & Sons", "Maroon 5"], answer: 1,
+          fact: "Grade I listings cover only about 2.5% of listed buildings in England." },
+        { clue: "A converted Victorian penthouse in Battersea — high above the Thames in South West London.",
+          style: "Penthouse · Battersea", img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=700&q=80",
+          options: ["Mumford & Sons", "Duran Duran", "Maroon 5"], answer: 0,
+          fact: "Battersea has become one of London's most sought-after riverside districts." },
+      ],
+    },
+    {
+      id: "sun", title: "Duran Duran", tag: "Sun 5 Jul",
+      questions: [
+        { clue: "A working farm in Gloucestershire owned by a former guitarist of a famous 1980s English band — a world away from his old London penthouse.",
+          style: "Working Farm · Glos", img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=700&q=80",
+          options: ["Duran Duran", "Maroon 5", "Mumford & Sons"], answer: 0,
+          fact: "Andy Taylor's old London penthouse was reportedly large enough to play cricket inside." },
+        { clue: "One of the most stylish bands of the New Romantic era — formed in Birmingham at the end of the 1970s.",
+          style: "Birmingham · 1978", img: "https://images.unsplash.com/photo-1449844908441-8195dad5cd97?w=700&q=80",
+          options: ["Mumford & Sons", "Duran Duran", "Maroon 5"], answer: 1,
+          fact: "Duran Duran formed in Birmingham in 1978." },
+        { clue: "A sun-drenched 1930s ranch estate in the Pacific Palisades, Los Angeles — palms, pool and an A-list pop frontman.",
+          style: "Ranch · LA", img: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=700&q=80",
+          options: ["Maroon 5", "Mumford & Sons", "Duran Duran"], answer: 0,
+          fact: "The Palisades is one of LA's priciest neighbourhoods." },
+      ],
+    },
+  ],
+};
+</script>
+<script src="quiz-engine.js"></script>
 </body>
 </html>
