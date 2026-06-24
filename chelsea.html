@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Winkworth · What's it Winkworth?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="quiz.css">
+<style>
+  /* Chelsea Flower Show theme — swap the festival concert backdrop for a garden
+     in bloom, and warm the title into cream/gold. Same engine, same structural CSS. */
+  :root{
+    --event-bg:url('https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1600&q=80');
+    --beam-a:rgba(201,168,76,0.10);
+    --beam-b:rgba(122,170,108,0.12);
+    --title-grad:linear-gradient(180deg,#fff 0%,#E9EBCF 55%,var(--gold) 100%);
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <section id="s-intro" class="screen center active"></section>
+  <section id="s-days" class="screen center"></section>
+  <section id="s-game" class="screen"></section>
+  <section id="s-locked" class="screen center"></section>
+</div>
+
+<script>
+/* ============================================================
+   EVENT CONFIG — RHS Chelsea.  Real Winkworth listings, guess the price.
+   Single round (no day picker) — players go straight into the game.
+   ============================================================ */
+window.CONFIG = {
+  demo: true,
+  event: "chelsea-2026",
+  brand: "Winkworth",
+  logo: "logo-light.svg",
+  logoNavy: "logo-navy.svg",
+  eyebrow: "RHS Chelsea · The Terrace",
+  title: "What's it Winkworth?",
+  lede: "Real Winkworth London homes. Can you guess the asking price? <strong>3 in a row</strong> wins a prize at the Winkworth stand.",
+  prompt: "What's the asking price?",
+  unit: "Property",
+  collectAt: "Winkworth stand",
+  streakToWin: 3,
+  attemptsPerDay: 3,
+  prizeLine: "Guess 3 prices in a row. Free to play.",
+  consentText: "I agree to be contacted by Winkworth about properties and services. I can opt out at any time.",
+  steps: [
+    ["1", "We show a real <strong>listing</strong>."],
+    ["2", "You guess the <strong>price</strong>."],
+    ["3", "In a row <strong>wins a prize</strong>."],
+  ],
+  days: [
+    {
+      id: "chelsea", title: "What's it Winkworth?", tag: "Real London homes",
+      questions: [
+        { clue: "A 1-bedroom flat on the King's Road, in the heart of Chelsea, SW3.",
+          style: "Chelsea, SW3 · 1 bed", disc: "Winkworth listing",
+          img: "https://www.winkworth.co.uk/getmedia/43b68806-42fd-4e5f-9fcf-e7c9f42a6d6c/SKN250064_02.jpg",
+          options: ["£510,000", "£395,000", "£625,000"], answer: 0,
+          fact: "On the market at £510,000 with Winkworth Chelsea." },
+        { clue: "A 2-bedroom flat on Chelsea Manor Street, SW3 — moments from the King's Road.",
+          style: "Chelsea, SW3 · 2 bed", disc: "Winkworth listing",
+          img: "https://www.winkworth.co.uk/getmedia/d24ae263-8c49-426c-8540-8c906522897d/KBR250036_7.jpg",
+          options: ["£820,000", "£700,000", "£560,000"], answer: 1,
+          fact: "Guide price £700,000." },
+        { clue: "A 3-bedroom flat on Stane Grove in Brixton, SW9.",
+          style: "Brixton, SW9 · 3 bed", disc: "Winkworth listing",
+          img: "https://www.winkworth.co.uk/getmedia/86cb4205-d697-4892-9810-40a4d7c6de55/CLP260030_02.jpg",
+          options: ["£640,000", "£900,000", "£750,000"], answer: 2,
+          fact: "On the market at £750,000." },
+        { clue: "A 2-bedroom flat on Colville Gardens in Notting Hill, W11.",
+          style: "Notting Hill, W11 · 2 bed", disc: "Winkworth listing",
+          img: "https://www.winkworth.co.uk/getmedia/7b4ff00d-de69-4275-b36b-5e97b2db9282/NHS250271_1.jpg",
+          options: ["£875,000", "£1,150,000", "£695,000"], answer: 0,
+          fact: "Guide price £875,000." },
+        { clue: "A 4-bedroom house on Filmer Road in Fulham, SW6.",
+          style: "Fulham, SW6 · 4 bed", disc: "Winkworth listing",
+          img: "https://www.winkworth.co.uk/getmedia/ddbdb81b-2d75-407d-9f29-531469c2d8de/FUP250072_05.jpg",
+          options: ["£1,000,000", "£1,350,000", "£780,000"], answer: 0,
+          fact: "On the market at £1,000,000." },
+        { clue: "A 2-bedroom maisonette at Chelsea Studios on the Fulham Road, SW6.",
+          style: "Chelsea, SW6 · 2 bed", disc: "Winkworth listing",
+          img: "https://www.winkworth.co.uk/getmedia/448f5867-7c7a-426b-b2f8-891c81ffe6a0/FUP260045_13.jpg",
+          options: ["£950,000", "£1,250,000", "£1,600,000"], answer: 1,
+          fact: "Guide price £1,250,000." },
+        { clue: "A 3-bedroom maisonette on Elgin Crescent in Notting Hill, W11.",
+          style: "Notting Hill, W11 · 3 bed", disc: "Winkworth listing",
+          img: "https://www.winkworth.co.uk/getmedia/f5c445ee-b2ec-4d0a-9e8c-a944240768c4/NHS250178_05.jpg",
+          options: ["£1,595,000", "£1,250,000", "£2,100,000"], answer: 0,
+          fact: "On the market at £1,595,000." },
+        { clue: "A 3-bedroom flat on Chelsea Embankment, SW3 — overlooking the Thames.",
+          style: "Chelsea, SW3 · 3 bed", disc: "Winkworth listing",
+          img: "https://www.winkworth.co.uk/getmedia/84195f56-e742-4004-87f1-c53e50ac0516/KBR250007_40.jpg",
+          options: ["£1,800,000", "£2,500,000", "£3,400,000"], answer: 1,
+          fact: "Guide price £2,500,000." },
+      ],
+    },
+  ],
+};
+</script>
+<script src="quiz-engine.js"></script>
+</body>
+</html>
