@@ -223,7 +223,8 @@
     err.textContent = "";
     if (name.length < 2) return (err.textContent = "Please enter your name.");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return (err.textContent = "Please enter a valid email.");
-    if (!consent) return (err.textContent = "Please tick the consent box to claim your prize.");
+    // Consent is optional — the prize isn't conditional on it. The value (ticked
+    // or not) is recorded so marketing know who they may contact later.
 
     const btn = $("r-btn");
     btn.disabled = true; btn.style.opacity = ".6"; btn.textContent = "Unlocking…";
@@ -262,7 +263,7 @@
           <div class="perf"></div>
           <div class="clabel">Prize Code</div><div class="code">${esc(code)}</div>
         </div>
-        <p class="lede" style="font-size:13px;margin-bottom:16px">Show this screen to the team at the <strong>${esc(C.collectAt)}</strong>.</p>
+        <p class="lede" style="font-size:13px;margin-bottom:16px">Show this screen at the <strong>${esc(C.collectAt)}</strong> to claim your ${esc(C.prizeName || "prize")}.</p>
         <button class="btn btn-ghost btn-sans" onclick="WK.close();WK.intro()">Done</button>
       </div>`;
   }
